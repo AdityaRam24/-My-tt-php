@@ -1,110 +1,52 @@
-* {
-    margin: 0;
-    padding: 0;
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+h2 {
+    text-align: center;
+    margin-top: 50px;
+}
+
+form {
+    width: 300px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 15px 0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
     box-sizing: border-box;
 }
 
-.navbar {
-    display: flex;
-    border-radius: 1rem;
-    align-items: center;
-    height: 75px;
-    justify-content: space-between;
-    border: 1px solid lightgray;
-    padding: 0 20px;
-}
-
-.nav-img1 img {
-    border-radius: 0.5rem;
-    height: 60px;
-    width: 100px;
-}
-
-.nav-icon {
-    display: flex;
-    gap: 20px;
-    align-items: center;
-}
-
-.branch {
-    display: flex;
-    justify-content: space-evenly;
-    flex-wrap: nowrap;
-    margin-top: 40px;
-    margin-left: 50px; 
-    margin-right:100px;/* Adjusted margin-left to shift the divs to the left */
-    max-width: 800px;
-    align-items: center;
-    gap: 25px;
-}
-
-.container h2 {
-    display: flex;
-    margin-left: 350px; /* Adjusted margin-left to center the h2 */
-    margin-bottom: initial;
-}
-
-
-.branch div {
-    font-size: 1rem;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    height: 100px;
-    width: 200px;
-    margin-bottom: 30px;
-    border-radius:20px;
-    background-color: plum;
-    border: 1px solid transparent;
-    transition: background-color 0.3s;
-    align-content: center;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: center;
-}
-
-.branch div:hover {
-    background-color: purple;
+input[type="submit"] {
+    width: 100%;
+    background-color: #4caf50;
     color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 16px;
 }
 
-.nav-tab {
-    border: 1px solid gray;
-    border-radius: 1rem;
-    height: 300px;
-    width: 150px;
-    margin-left: 10px;
-    margin-right: 10px;
-    margin-bottom: 0px;
-    font-size: 1.2rem;
+input[type="submit"]:hover {
+    background-color: #45a049;
 }
 
-.footer {
-    font-size: small;
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-start;
-    height: 100px;
-    background-color: grey;
-    align-content: flex-end;
-    flex-wrap: wrap;
-    flex-direction: column;
-}
-
-.nav-icon3 {
-    display: flex; /* Ensure flexbox display for proper alignment */
-    justify-content: center;
-    align-items: center;
-}
-
-p {
-    font-size: 1rem;
-    display: flex;
-    text-align: right;
-    margin: 0; /* Remove default margin */
-}
-.main{
-    border-radius: 2rem;
-    display: flex;
-    justify-content: space-between;
+.error {
+    color: red;
+    margin-bottom: 10px;
 }
