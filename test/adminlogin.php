@@ -1,66 +1,48 @@
 <?php
-$servername = "localhost"; // Assuming your MySQL server is running on the localhost
-$username = "root"; // Change this to your MySQL username
-$password = ""; // Change this to your MySQL password
-$database = "MYTT"; // Change this to your MySQL database name
+session_start(); // Start session if not already started
 
-// Create connection
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "my tt";
+
 $conn = new mysqli($servername, $username, $password, $database);
 
-// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
     $role = $_POST['role'];
-    if($role == 'student')
-    {
-        $sql = "SELECT * FROM student;";
+    
+    if ($role == 'student') {
+        $sql = "SELECT * FROM student WHERE Roll_no = ? AND s_password = ?";
+    } else if ($role == 'Administrator') {
+        $sql = "SELECT * FROM admin WHERE A_name = ? AND A_password = ?";
+    } else if ($role == 'coordinator') {
+        $sql = "SELECT * FROM coordinator WHERE C_name = ? AND C_password = ?";
+    } else {
+        echo 'Something went wrong';
+        exit();
     }
-    else if($role == 'Administrator')
-    {
-        $sql = "SELECT * FROM admin;";
-
-    }
-    else if($role == 'coordinator')
-    {
-        $sql = "SELECT * FROM coordinator;";
-
-    }
-    // Prepare and bind SQL statement
-    else 
-    {
-        echo 'something went wrong';
-    }
-
     
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sss", $username, $password, $role);
+    $stmt->bind_param("ss", $username, $password);
     
-    // Execute the statement
     $stmt->execute();
     
-    // Get result
     $result = $stmt->get_result();
     
     if ($result->num_rows == 1) {
         // Login successful
         echo "Login successful!";
-        // Redirect to a welcome page or dashboard
-        // header("Location: welcome.php");
-        $redirect_page = 'http://localhost/test/homepage.php';
+        // After successful authentication
+        $_SESSION['username'] = $username; // Set username in session
 
-        if(isset($_POST['Login'])){
-            $redirect = true;
-            if ($redirect == true) {
-                header('Location : http://localhost/test/homepage.php');
-                exit(); // Always exit after sending a Location header
-            }
-}
+        // Redirect to slot.php or any other page
+        header("Location: homepage.php");
         exit();
     } else {
         // Login failed
@@ -79,6 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
    <h2>Login Form</h2>
+   <div>
    <form method="post" action="login.php">
       <label for="username">Username:</label>
       <input type="text" id="username" name="username" required><br><br>
@@ -89,10 +72,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <select id="role" name="role">
          <option value="student">Student</option>
          <option value="Administrator">Administrator</option>
-         <option value="coordinator"> coordinator </option>
+         <option value="coordinator">Coordinator</option> Corrected role name
       </select><br><br>
       
-      <input type="submit" value="Login"  name="submit">
+      <input type="submit" value="Login" name="submit">
    </form>
+   <div>
 </body>
 </html>

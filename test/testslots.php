@@ -12,9 +12,31 @@ $conn = new mysqli($servername, $username, $password, $database);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Retrieving the value of the button from the form submission
+    
+        $buttonValue = $_POST['EM4'];
+        if (isset($_POST['EM4'])) 
+            $buttonValue = $_POST['EM4'];
+        else if (isset($_POST['DBMS']))
+        $buttonValue = $_POST['DBMS'];
+        else if (isset($_POST['OS']))
+        $buttonValue = $_POST['OS'];
+        else if (isset($_POST['PEM']))
+        $buttonValue = $_POST['PEM'];
+}   
+    
+if($buttonValue == 'DBMS')
+{
+    $sql = "SELECT S_id, t_name, s_time FROM slots JOIN sub_has_slots USING(s_id) WHERE sub_name = 'Database Management'";
+}
+else if($buttonValue == 'OS')
+{
+    $sql = "SELECT S_id, t_name, s_time FROM slots JOIN sub_has_slots USING(s_id) WHERE sub_name = 'Operating Systems'";
+}
 
 // Fetch slots from database
-$sql = "SELECT S_id, t_name, s_time FROM slots JOIN is_alloted_to USING(s_id)";
+
 $result = $conn->query($sql);
 
 $slots = array();
