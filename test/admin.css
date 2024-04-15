@@ -1,0 +1,97 @@
+body {
+    background-color: #6542a7;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login-container {
+    background-color: #a99cf0; /* Light purple background */
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+    transition: transform 0.5s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.login-container:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.4);
+}
+
+h2 {
+    color: #fff;
+    text-align: center;
+    margin-bottom: 30px;
+    transition: color 0.3s ease-in-out;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    position: relative; /* Needed for absolute positioning */
+}
+
+.input-group label {
+    color: #fff;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 25px;
+    border: none;
+    background-color: #fff;
+    color: #333;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.input-group input:focus {
+    background-color: #f0f0f0;
+    outline: none;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Animation for username field */
+@keyframes moveColor {
+    0% {
+        background-position: 0 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0 50%;
+    }
+}
+
+
+
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background-color: #8a2be2;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 25px;
+    font-size: 18px;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+button:hover {
+    background-color: #9932cc;
+    transform: scale(1.05);
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+@media screen and (max-width: 600px) {
+    .login-container {
+        width: 80%;
+    }
+}
