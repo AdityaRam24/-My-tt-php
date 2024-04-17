@@ -1,5 +1,6 @@
 <?php
 session_start();
+var_dump($_SESSION);
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 if (isset($_POST['INFT'])) {
    

@@ -1,6 +1,5 @@
 <?php
 session_start(); // Start session if not already started
-
 // Your PHP code to establish database connection and fetch slots data
 $servername = "localhost";
 $username = "root";
@@ -23,7 +22,7 @@ try {
         throw new Exception("Student ID is not set in session, handle accordingly");
     }
 
-    $deptname = $_SESSION['deptname'];
+    $deptname = $_SESSION['DEPT'];
     $sqlsubsArr = "SELECT Subject_name FROM dept_contains WHERE D_name = ?";
     $stmt = $conn->prepare($sqlsubsArr);
     $stmt->bind_param("s", $deptname);
