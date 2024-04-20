@@ -1,17 +1,8 @@
 <?php
-session_start(); // Start session if not already started
-// Your PHP code to establish database connection and fetch slots data
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "my tt";
-
-
+include 'session_start.php';
+include 'config.php';
 try {
-    // Create connection
-    $conn = new mysqli($servername, $username, $password, $dbname);
-
-    // Check connection
+// Check connection
     if ($conn->connect_error) {
         throw new Exception("Connection failed: " . $conn->connect_error);
     }
@@ -22,7 +13,7 @@ try {
         throw new Exception("Student ID is not set in session, handle accordingly");
     }
 
-    $deptname = $_SESSION['DEPT'];
+    $deptname = $_SESSION['dept'];
     $sqlsubsArr = "SELECT Subject_name FROM dept_contains WHERE D_name = ?";
     $stmt = $conn->prepare($sqlsubsArr);
     $stmt->bind_param("s", $deptname);
@@ -38,12 +29,18 @@ try {
         if (isset($_POST['subject_mand'])) {
             // Assign the selected subject to $sub
             $sub = trim($_POST['subject_mand']);
+            $_SESSION['subject'] = $sub;
+            
         } elseif (isset($_POST['subject_alc'])) {
             // Assign the selected subject to $sub
             $sub = trim($_POST['subject_alc']);
+            $_SESSION['subject'] = $sub;
         }
-    }
 
+    }
+    if(isset($_SESSION['subject'])){
+        $sub = $_SESSION['subject'];
+    }
     // Fetch slots data based on the subject parameter sent via GET request
     $slots = array();
     $slot_times = array();
@@ -65,9 +62,7 @@ try {
                 $venue[] = $row['venue'];
             }
         }
-    }
-    $subject = $_SESSION['subject'] ; 
-    echo $subject; 
+    }  
     $i = 0;
     if (isset($_POST['Enroll'])) {
         $info_json = $_POST['Enroll'];
@@ -75,9 +70,9 @@ try {
 
         if ($info[0] != null) { // Check for null value before proceeding
             // Check if the first 3 characters of S_id in the database match the first 3 characters of info[0]
-            $checkDuplicate = "SELECT S_id FROM student_selects_slots WHERE LEFT(S_id, 3) = LEFT(?, 3)";
+            $checkDuplicate = "SELECT S_id , Roll_no FROM student_selects_slots WHERE S_id = ? and Roll_no = ?";
             $stmtCheck = $conn->prepare($checkDuplicate);
-            $stmtCheck->bind_param("s", $info[0]);
+            $stmtCheck->bind_param("ss", $info[0] , $username);
             $stmtCheck->execute();
             $resultCheck = $stmtCheck->get_result();
 
@@ -97,6 +92,10 @@ try {
                 if ($stmtEnroll->execute()) {
                     $alertMessage = "Enrollment successful.";
                     echo '<script>alert("' . $alertMessage . '");</script>';
+                    $subject = $_SESSION['subject'] ;
+                    echo $subject;
+                    $deptname = $_SESSION['dept'];
+                    echo $deptname;
                     echo '<script>window.location.href = "subjectpage.php";</script>'; // Redirect to subjectpage.php
                 } else {
                     $alertMessage = "Invalid slot selected.";
@@ -139,22 +138,26 @@ try {
                 if ($stmtUnenroll->execute()) {
                     $alertMessage = "Unenrolled successfully.";
                     echo '<script>alert("' . $alertMessage . '");</script>';
-                    echo '<script>window.location.href = "subjectpage.php";</script>'; // Redirect to subjectpage.php
+                    $subject = $_SESSION['subject'] ;
+                    echo $subject;
+                    $deptname = $_SESSION['DEPT'];
+                    echo $deptname;
+                    echo '<script>window.location.href = "slot.php";</script>'; // Redirect to subjectpage.php
                 } else {
                     $alertMessage = "Failed to unenroll from the slot.";
                     echo '<script>alert("' . $alertMessage . '");</script>'; // Display alert message
-                    echo '<script>window.location.href = "subjectpage.php";</script>'; // Redirect to subjectpage.php
+                    echo '<script>window.location.href = "slot.php";</script>'; // Redirect to subjectpage.php
                 }
             } catch (Exception $e) {
                 $alertMessage = "An error occurred while unenrolling.";
                 echo '<script>alert("' . $alertMessage . '");</script>'; // Display alert message
-                echo '<script>window.location.href = "subjectpage.php";</script>'; // Redirect to subjectpage.php
+                echo '<script>window.location.href = "slot.php";</script>'; // Redirect to subjectpage.php
             }
         } else {
             // If not enrolled, display alert
             $alertMessage = "You are not enrolled in this slot.";
             echo '<script>alert("' . $alertMessage . '");</script>'; // Display alert message
-            echo '<script>window.location.href = "subjectpage.php";</script>'; // Redirect to subjectpage.php
+            echo '<script>window.location.href = "slot.php";</script>'; // Redirect to subjectpage.php
         }
     }
     
@@ -214,8 +217,8 @@ try {
 
                     for ($j = 0; $j < count($slots); $j++) {
                         if ($t_name[$j] == $current_teacher && $venue[$j] == $current_venue) {
-                            $s .= '' . $slots[$j] . '&nbsp';
-                            $st .= '' . $slot_times[$j] . '&nbsp';
+                            $s .= '' . $slots[$j];
+                            $st .= '' . $slot_times[$j];
                         }
                     }
 

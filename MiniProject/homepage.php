@@ -1,24 +1,24 @@
 <?php
-session_start();
-var_dump($_SESSION);
+include 'session_start.php';
+include 'config.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-if (isset($_POST['INFT'])) {
-   
-    $_SESSION['deptname']='INFT';
-} elseif (isset($_POST["CMPN"])) {
-  
-    $_SESSION['deptname']='CMPN';
-} elseif (isset($_POST["EXTC"])) {
-  
-    $_SESSION['deptname']='EXTC';
-} elseif (isset($_POST["EXCS"])) {
+    if(isset($_POST['submit'])){
+    
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
-    $_SESSION['deptname']='EXCS';
-} elseif (isset($_POST["BIOM"])) {
-
-    $_SESSION['deptname']='BIOM';
-} 
+    $sql= "select Roll_no as username , s_password as pass from student where Roll_no = ? and s_password = ? union select A_name as username , A_password as pass from admin where A_name = ? and A_password = ? union select C_name as username , C_password as pass from coordinator where C_name = ? and C_password = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ssssss", $username, $password, $username, $password, $username, $password);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
+        $_SESSION['username'] = $row['username'];
+        echo $row['username'].'<br>';
+    }
+    }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -1,39 +1,35 @@
 <?php
-session_start();
-var_dump($_SESSION);
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "my tt";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+include 'session_start.php';
+include 'config.php';
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if (isset($_POST['INFT'])) {
+    //$_SESSION['deptname'] = $_POST["INFT"];
+    $_SESSION['dept'] ='INFT';
+} elseif (isset($_POST["CMPN"])) {
+    //$_SESSION['deptname']= $_POST["CMPN"];
+    $_SESSION['dept']= "CMPN";
+} elseif (isset($_POST["EXTC"])) {
+    //$_SESSION['deptname']= $_POST["EXTC"];
+    $_SESSION['dept']= "EXTC";
+} elseif (isset($_POST["EXCS"])) {
+   // $_SESSION['deptname']= $_POST["EXCS"];
+    $_SESSION['dept']= "EXCS";
+} elseif (isset($_POST["BIOM"])) {
+    //$_SESSION['deptname']= $_POST["BIOM"];
+    $_SESSION['dept']= "BIOM";
 }
+} 
 
 $subject_mand = [];
 $subject_alc = [];
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
-    $_SESSION['deptname'] = key($_POST);
 
-    if ($_SESSION['deptname'] == 'INFT') {
-        $sql1 = "SELECT Subject_name FROM dept_contains JOIN subject USING(subject_name) WHERE D_name = 'INFT' AND subject_type = 'MAND'";
-        $sql2 = "SELECT Subject_name FROM dept_contains JOIN subject USING(subject_name) WHERE D_name = 'INFT' AND subject_type = 'ALC'";
-    } elseif ($_SESSION['deptname'] == 'CMPN') {
-        $sql1 = "SELECT Subject_name FROM dept_contains JOIN subject USING(subject_name) WHERE D_name = 'CMPN' AND subject_type = 'MAND'";
-        $sql2 = "SELECT Subject_name FROM dept_contains JOIN subject USING(subject_name) WHERE D_name = 'CMPN' AND subject_type = 'ALC'";
-    } elseif ($_SESSION['deptname'] == 'EXTC') {
-        $sql1 = "SELECT Subject_name FROM dept_contains JOIN subject USING(subject_name) WHERE D_name = 'EXTC' AND subject_type = 'MAND'";
-        $sql2 = "SELECT Subject_name FROM dept_contains JOIN subject USING(subject_name) WHERE D_name = 'EXTC' AND subject_type = 'ALC'";
-    } elseif ($_SESSION['deptname'] == 'EXCS') {
-        $sql1 = "SELECT Subject_name FROM dept_contains JOIN subject USING(subject_name) WHERE D_name = 'EXCS' AND subject_type = 'MAND'";
-        $sql2 = "SELECT Subject_name FROM dept_contains JOIN subject USING(subject_name) WHERE D_name = 'EXCS' AND subject_type = 'ALC'";
-    } elseif ($_SESSION['deptname'] == 'BIOM') {
-        $sql1 = "SELECT Subject_name FROM dept_contains JOIN subject USING(subject_name) WHERE D_name = 'BIOM' AND subject_type = 'MAND'";
-        $sql2 = "SELECT Subject_name FROM dept_contains JOIN subject USING(subject_name) WHERE D_name = 'BIOM' AND subject_type = 'ALC'";
-    } else {
+    if (isset($_SESSION['dept']) ) {
+        $sql1 = "SELECT Subject_name FROM dept_contains JOIN subject USING(subject_name) WHERE D_name = '".$_SESSION['dept']."' AND subject_type = 'MAND'";
+        $sql2 = "SELECT Subject_name FROM dept_contains JOIN subject USING(subject_name) WHERE D_name = '".$_SESSION['dept']."' AND subject_type = 'ALC'";
+    } 
+    
+    else {
         echo "Invalid department name.";
         exit;
     }
@@ -49,26 +45,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
     while ($row1 = $result1->fetch_assoc()) {
         $subject_mand[] = $row1["Subject_name"];
     }
-
     while ($row2 = $result2->fetch_assoc()) {
         $subject_alc[] = $row2["Subject_name"];
     }
 
     $stmt1->close();
     $stmt2->close();
-
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
     foreach ($subject_mand as $subject) {
-        if (isset($_POST[$subject])) {
-            $_SESSION['subject'] = $_POST[$subject];
+        if (isset($_POST['subject_mand'])) {
+            $_SESSION['subject'] = $_POST['subject_mand'];
         }
     }
 
     foreach ($subject_alc as $subject1) {
-        if (isset($_POST[$subject1])) {
-            $_SESSION['subject'] = $_POST[$subject1];
+        if (isset($_POST['subject_alc'])) {
+            $_SESSION['subject'] = $_POST['subject_alc'];
         }
     }
-}
+    }
 
 $conn->close();
 ?>
@@ -106,7 +101,7 @@ $conn->close();
             <div class="main">
                 <div class="nav-tab">
                     <ul class="sitePages">
-                        <li id="myCourses"><a href="myCourses.php">My Courses</a></li>
+                        <li id="myCourses"><a href="calscript.php">My Courses</a></li>
                         <li id="siteBlogs"><a href="siteBlogs.php">Site Blogs</a></li>
                         <li id="siteBadges"><a href="siteBadges.php">Site Badges</a></li>
                         <li id="Tags"><a href="Tags.php">Tags</a></li>
@@ -124,9 +119,9 @@ $conn->close();
                     </div>
                     <h2 id="ALC">ALC Subjects:</h2>
                     <div class="subject2">
-                        <?php foreach ($subject_alc as $subject): ?>
+                        <?php foreach ($subject_alc as $subject1): ?>
                             <div class="subject-button">
-                                <button type="submit" value="<?= $subject ?>" name="subject_alc" style="background-color: transparent; border: 2px solid transparent; outline: none; height: 100px; width: 100px; border-radius: 2rem;"><?= $subject ?></button>
+                                <button type="submit" value="<?= $subject1 ?>" name="subject_alc" style="background-color: transparent; border: 2px solid transparent; outline: none; height: 100px; width: 100px; border-radius: 2rem;"><?= $subject1 ?></button>
                             </div>
                         <?php endforeach; ?>
                     </div>
