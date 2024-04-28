@@ -283,7 +283,7 @@ if (isset($_POST["update"])) {
                 <tbody>
                     <?php
                     // Fetch slots from database
-                    $sql = "SELECT slot_id, t_name, venue, subject_name , subject_type FROM codinator_adds join subject using(subject_name)";
+                    $sql = "SELECT slot_id, t_name, venue, subject_name , subject_type FROM codinator_adds join subject using(subject_name) order by slot_id";
                     $result = $conn->query($sql);
                     if ($result->num_rows > 0) {
                         while($row = $result->fetch_assoc()) {

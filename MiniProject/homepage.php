@@ -43,6 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
    
     }
     if (isset($_POST['logout']) && !empty($_POST['logout'])) {
+        
         header("Location: logout.php");
         exit(); 
     }
@@ -58,6 +59,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>HomePage</title>
     <link rel="stylesheet" href="homepagestyle.css"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script>
+    function preventHistoryBack() {
+        // // Manipulate browser history to prevent going back
+        // history.pushState(null, null, location.href);
+        // window.onpopstate = function () {
+        //     history.go(1);
+        // };
+
+        window.history.forward();
+
+    }
+    setTimeout("preventHistoryBack()",0);
+    window.onunload = function(){null};
+</script>
+
 </head>
 <body>
     <form action="subjectpage.php" method="post">
@@ -69,6 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
             </div>
 
+
         <div class="main">
             <div class="nav-tab">
                 <h3>More from Vidyalankar</h3>
@@ -78,7 +95,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <li id="ERP LOGIN "><a href="https://erp.mycollege.edu.in/landingpage.ashx"  style="text-decoration: none;">ERP LOGIN </a></li>
                     <li id="V-Print"><a href="http://vprint.vit.edu.in:9191/user" onclick="loadPage('http://vprint.vit.edu.in:9191/user')" style="text-decoration: none;">V-Print</a></li>
                     <li id="Campus Connect"><a href="https://a.impartus.com/login/#/" onclick="loadPage('https://a.impartus.com/login/#/')" style="text-decoration: none;">Campus Connect</a></li>
-                    <li><a href="logout.php" style="text-decoration: none; color: red; display: inline-block; height: 100%; width: 100%; font-size:1rem;font: weight 1000px;">LOG OUT</a></li>    
+                    <li><a href="logout.php"style="text-decoration: none; color: red; display: inline-block; height: 100%; width: 100%; font-size:1rem;font: weight 1000px;" >LOG OUT</a></li> 
+                    
                 </ul>
             </div>
             <div class="branch">
